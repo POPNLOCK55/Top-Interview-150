@@ -16,7 +16,7 @@ let n = 3
 var merge = function (nums1, m, nums2, n) {
     for (let i = m, j = 0; j < n; i++, j++) {
         // i is told to begin iteration of nums1 at the index of whatever m's value is.
-        // as long as i or j are less than the value of n, the loop will continue. If n is 0, the loop never runs.
+        // as long as j is less than the value of n, the loop will continue. If n is 0, the loop never runs.
         // j is going to always begin at 0 since we want to iterate through the entirety nums2 ALWAYS
         nums1[i] = nums2[j];
         //Here we're going set nums1 index of i, which is 3 to be the same value as nums2 index of j, which is 2. This will overwrite the 0 values at the end of nums1.
@@ -50,3 +50,57 @@ var removeElement = function (nums, val) {
 };
 //Final note: this function beats 99.2% of user runtimes on leetcode, with an average runtime of just 44ms and beats 79.1% of user memory usage, with a usage of 41.8mb of memory used.
 removeElement(nums, val)
+
+//day 3
+// 26. Remove Duplicates From Sorted Array I
+
+// Given an integer array nums sorted in non-decreasing order, remove the duplicates in-place such that each unique element appears only once. The relative order of the elements should be kept the same. Then return the number of unique elements in nums.
+// Consider the number of unique elements of nums to be k, to get accepted, you need to do the following things:
+// Change the array nums such that the first k elements of nums contain the unique elements in the order they were present in nums initially. The remaining elements of nums are not important as well as the size of nums.
+// Return k.
+
+var removeDuplicates = function(nums) {
+    for(let i = 0, j = 1; i < nums.length; i++, j++){ //Defined two vars i and j to iterate through arrays at two different positons for comparison
+        if(nums[i] === nums[j]){ //simple comparison to check if the two indeces match
+            nums.splice(j, 1)//If they do, I use splice to remove j's duplicate value
+            j--  //Here was my hang-up with this algo. I made sure to decrement j so that after the splice, it wouldn't skip an index in the array.
+            i-- //I failed to notice that without also decrementing i, that the indexes would then match, possibly splicing out a value that was unique, or disrupting the order of comparison, skipping over other duplicates.
+        }
+        else if(nums[i] !== nums[j]){ //simple logic to tell the loop to continue the next iteration if no match is found.
+            continue
+            }
+    }
+    
+};
+//Note: my solution here is very memory efficient, beating 97% of solutions on leetcode with a memory usage of just 44mb. However it is very slow, only beating 15% of runtimes with a total runtime of 135ms.
+
+
+// 80. Remove Duplicates from Sorted Array II
+
+// Given an integer array nums sorted in non-decreasing order, remove some duplicates in-place such that each unique element appears at most twice. The relative order of the elements should be kept the same.
+// Since it is impossible to change the length of the array in some languages, you must instead have the result be placed in the first part of the array nums. More formally, if there are k elements after removing the duplicates, then the first k elements of nums should hold the final result. It does not matter what you leave beyond the first k elements.
+// Return k after placing the final result in the first k slots of nums.
+// Do not allocate extra space for another array. You must do this by modifying the input array in-place with O(1) extra memory.
+
+
+var removeDuplicates2 = function(nums) {
+    // Special case...
+    if(nums.length <= 2) {
+        return nums.length;
+    }
+    // Initialize an integer k that updates the kth index of the array...
+    // only when the current element does not match either of the two previous indexes...
+    let k = 2;
+    // Traverse elements through loop...
+    for(let i = 2; i < nums.length; i++){
+        // If the index does not match the (k-1)th and (k-2)th elements, count that element...
+        if(nums[i] !== nums[k - 2] || nums[i] !== nums[k - 1]){
+            nums[k] = nums[i];
+            k++;
+        // If the index matches the (k-1)th and (k-2)th elements, we skip it...
+        }
+    }
+    return k;       //Return k after placing the final result in the first k slots of nums...
+};
+
+
