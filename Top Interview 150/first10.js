@@ -1,4 +1,4 @@
-//day 1 of my algo challenges from leetcode.
+//day 1 
 
 
 /*/Question 88: Merge Sorted Array
@@ -59,18 +59,18 @@ removeElement(nums, val)
 // Change the array nums such that the first k elements of nums contain the unique elements in the order they were present in nums initially. The remaining elements of nums are not important as well as the size of nums.
 // Return k.
 
-var removeDuplicates = function(nums) {
-    for(let i = 0, j = 1; i < nums.length; i++, j++){ //Defined two vars i and j to iterate through arrays at two different positons for comparison
-        if(nums[i] === nums[j]){ //simple comparison to check if the two indeces match
+var removeDuplicates = function (nums) {
+    for (let i = 0, j = 1; i < nums.length; i++, j++) { //Defined two vars i and j to iterate through arrays at two different positons for comparison
+        if (nums[i] === nums[j]) { //simple comparison to check if the two indeces match
             nums.splice(j, 1)//If they do, I use splice to remove j's duplicate value
             j--  //Here was my hang-up with this algo. I made sure to decrement j so that after the splice, it wouldn't skip an index in the array.
             i-- //I failed to notice that without also decrementing i, that the indexes would then match, possibly splicing out a value that was unique, or disrupting the order of comparison, skipping over other duplicates.
         }
-        else if(nums[i] !== nums[j]){ //simple logic to tell the loop to continue the next iteration if no match is found.
+        else if (nums[i] !== nums[j]) { //simple logic to tell the loop to continue the next iteration if no match is found.
             continue
-            }
+        }
     }
-    
+
 };
 //Note: my solution here is very memory efficient, beating 97% of solutions on leetcode with a memory usage of just 44mb. However it is very slow, only beating 15% of runtimes with a total runtime of 135ms.
 
@@ -83,24 +83,84 @@ var removeDuplicates = function(nums) {
 // Do not allocate extra space for another array. You must do this by modifying the input array in-place with O(1) extra memory.
 
 
-var removeDuplicates2 = function(nums) {
+var removeDuplicates2 = function (nums) {
     // Special case...
-    if(nums.length <= 2) {
+    if (nums.length <= 2) {
         return nums.length;
     }
     // Initialize an integer k that updates the kth index of the array...
     // only when the current element does not match either of the two previous indexes...
     let k = 2;
     // Traverse elements through loop...
-    for(let i = 2; i < nums.length; i++){
+    for (let i = 2; i < nums.length; i++) {
         // If the index does not match the (k-1)th and (k-2)th elements, count that element...
-        if(nums[i] !== nums[k - 2] || nums[i] !== nums[k - 1]){
+        if (nums[i] !== nums[k - 2] || nums[i] !== nums[k - 1]) {
             nums[k] = nums[i];
             k++;
-        // If the index matches the (k-1)th and (k-2)th elements, we skip it...
+            // If the index matches the (k-1)th and (k-2)th elements, we skip it...
         }
     }
     return k;       //Return k after placing the final result in the first k slots of nums...
 };
 
+//day 4
 
+//169. Majority Element 
+
+
+var majorityElement = function (nums) {
+    let count = {}; //initializing an object to store our dupe values
+    for (let i = 0; i < nums.length; i++) {
+        if (count[nums[i]]) { //I think we're saying "if this index exists in nums, increase that index by 1"
+            count[nums[i]]++
+        } else {
+            count[nums[i]] = 1 //else we are setting the index to 1
+        }
+    }
+    for (let key in count) {
+        if (count[key] > nums.length / 2) //With another for loop, we check if each index is greater than the length of the array divided by two. If it is, we return that key.
+            return key
+    }
+};
+
+
+//33. Search in Rotated Sorted Array
+
+// There is an integer array nums sorted in ascending order (with distinct values).
+
+// Prior to being passed to your function, nums is possibly rotated at an unknown pivot index k (1 <= k < nums.length) such that the resulting array is [nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]] (0-indexed). For example, [0,1,2,4,5,6,7] might be rotated at pivot index 3 and become [4,5,6,7,0,1,2].
+
+// Given the array nums after the possible rotation and an integer target, return the index of target if it is in nums, or -1 if it is not in nums.
+
+// You must write an algorithm with O(log n) runtime complexity.
+
+
+
+
+
+var search = function(nums, target) {
+    let start = 0, end = nums.length - 1;
+    let mid = Math.floor((start + end) / 2);
+    while (start <= end) {
+        mid = Math.floor((start + end) / 2);
+        if (target === nums[mid]) {
+            return mid;
+        }
+        if (nums[start] <= nums[mid]) {
+            if (nums[start] <= target && nums[mid] >= target) {
+                end = mid - 1;
+            } else {
+                start = mid + 1;
+            }
+        } else {
+            if (nums[end] >= target && nums[mid] <= target) {
+                start = mid + 1;
+            } else {
+                end = mid - 1;
+            }
+        }
+    }
+    return -1;
+}
+
+search([4,5,6,7,0,1,2], 0 )
