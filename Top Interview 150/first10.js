@@ -138,7 +138,7 @@ var majorityElement = function (nums) {
 
 
 
-var search = function(nums, target) {
+var search = function (nums, target) {
     let start = 0, end = nums.length - 1;
     let mid = Math.floor((start + end) / 2);
     while (start <= end) {
@@ -163,4 +163,43 @@ var search = function(nums, target) {
     return -1;
 }
 
-search([4,5,6,7,0,1,2], 0 )
+search([4, 5, 6, 7, 0, 1, 2], 0)
+
+
+//day 5 
+
+//189. Rotate Array
+//Given an integer array (nums), rotate the array to the right by (k) steps, where (k) is non-negative.
+
+var rotate = function (nums, k) {
+    for (let i = 0; i < k; i++) { //Here we use a for loop to iterate through our array (k) number of times.
+        nums.unshift(nums.pop()); //In each iteration, we use nums.pop() as an argument to give to nums.unshift()
+        //This removes the last value in the array and passes it to unshift to be placed at the start of the array.
+    }
+
+};
+//Note: This is a brute force solution to this algorithm, there are several other ways to approach this that are more efficient, but quite a bit more complex. This exceeded time constraints but does work.
+
+
+//121. Best Time to Buy and Sell Stock
+// You are given an array prices where prices[i] is the price of a given stock on the ith day.
+
+// You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.
+
+// Return the maximum profit you can achieve from this transaction.If you cannot achieve any profit, return 0.
+
+
+var maxProfit = function(prices) {
+    let buy = 0;
+    let sell = 1;
+    let max = 0;
+    while (sell < prices.length){
+        if (prices[buy] < prices[sell]){
+            let profit = prices[sell] - prices[buy];
+            max = Math.max(max, profit);
+        }else {buy = sell}
+        sell++
+    }
+    return max;
+};
+
