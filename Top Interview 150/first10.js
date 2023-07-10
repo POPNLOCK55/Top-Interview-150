@@ -189,17 +189,55 @@ var rotate = function (nums, k) {
 // Return the maximum profit you can achieve from this transaction.If you cannot achieve any profit, return 0.
 
 
-var maxProfit = function(prices) {
-    let buy = 0;
+var maxProfit = function (prices) {
+    let buy = 0; //Here we are going to set buy and sell to 0 and 1, representing the indeces we want them to start at.
     let sell = 1;
-    let max = 0;
-    while (sell < prices.length){
-        if (prices[buy] < prices[sell]){
-            let profit = prices[sell] - prices[buy];
-            max = Math.max(max, profit);
-        }else {buy = sell}
+    let max = 0; //max will be 0, so that it can be updated with the maximum value later.
+    while (sell < prices.length) { //Begin a while loop that runs as long as sell's value is less than the total length of our array.
+        if (prices[buy] < prices[sell]) { //IF the index value of buy (which starts at index 0) is LESS THAN the index value of sell (which starts at index 1)
+            let profit = prices[sell] - prices[buy]; //We create a var called profit which will be the value of sell's current index subtracted by the value of buy's current index
+            max = Math.max(max, profit);// Then we update the max variable to run a Math.max method that will override the value of max with whatever value is the highest.
+        } else { buy = sell } //In the case the above loop ends without our condition being true, we move buy and sell up one index, and run the loop over again until we find the maximum value of profit.
         sell++
     }
     return max;
 };
 
+
+//day 6
+//122. Best Time to Buy and Sell Stock II
+
+//You are given an integer array prices where prices[i] is the price of a given stock on the ith day.
+
+//On each day, you may decide to buy and/or sell the stock. You can only hold at most one share of the stock at any time. However, you can buy it then immediately sell it on the same day.
+
+//Find and return the maximum profit you can achieve.
+
+var maxProfit = function (prices) {
+    let profit = 0
+    let min = Infinity
+    for (let i = 0; i < prices.length; i++) {
+        min = Math.min(min, prices[i]) //Here we assign min the minimum value between the current index and Infinity.
+        if (prices[i] - min > 0) { //Then we check if that index subtracted from min's new value is greater than 0.
+            profit += prices[i] - min;//IF our check is true, then we update profit with whatever the current index subtracted from min is.
+            min = prices[i]; //min will then become the value of the current index, and the loop will iterate until we achieve the highest profit.
+        }
+    }
+    return profit;
+} //Note: This is a slow-ish solution, but overall is fairly clean and simple. I wonder if replacing min's default of Infinity to Null or 0 would help with runtime. Unsure if Infinity is a complex number to work with or not.
+
+//55. Jump Game
+//You are given an integer array nums. You are initially positioned at the array's first index, and each element in the array represents your maximum jump length at that position.
+
+//Return true if you can reach the last index, or false otherwise.
+
+var canJump = function (nums) {
+    let lastIndex = nums.length - 1;
+
+    for (let i = nums.length; i >= 0; i--) {
+        if (i + nums[i] >= lastIndex)
+            lastIndex = i;
+    }
+
+    return lastIndex == 0;
+};
