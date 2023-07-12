@@ -231,7 +231,7 @@ var maxProfit = function (prices) {
 
 //Return true if you can reach the last index, or false otherwise.
 
-var arr = [3,2,5,2,1]
+var arr = [3, 2, 5, 2, 1]
 
 var canJump = function (nums) {
     let lastIndex = nums.length - 1; //We define our var lastIndex as one value shorter than the total length. This is because we start at index 0, which means our firstr index is not counted in the total spaces we need to jump.
@@ -239,7 +239,7 @@ var canJump = function (nums) {
     for (let i = nums.length; i >= 0; i--) { //Create a for loop to iterate through the whole array
         console.log(i)
         if (i + nums[i] >= lastIndex) //Here I state that if i's current value, which would be 0, added to the value of nums[i] is greater than or equal to the length of the array;
-        console.log(nums.length)
+            console.log(nums.length)
         lastIndex = i; //Then lastIndex will be set to the value of i.
         console.log('nums is:', nums[i])
         console.log('i has a value of:', i)
@@ -259,7 +259,20 @@ canJump(arr)
 //0 <= j <= nums[i] and
 //i + j < n
 //Return the minimum number of jumps to reach nums[n - 1]. The test cases are generated such that you can reach nums[n - 1].
-
-var jump = function(nums){
-    
+nums = [2, 3, 1, 1, 4]
+var jump = function (nums) {
+    let lastIndex = nums.length - 1;
+    let currentIndex = -1;
+    let nextIndex = 0;
+    let jumps = 0;
+    for (let i = 0; nextIndex < lastIndex; i++) {
+        if ( i > currentIndex ) {
+            jumps++;
+            currentIndex = nextIndex;
+        }
+        nextIndex = Math.max(nextIndex, nums[i] + i);
+    }
+    return jumps;
 }
+
+jump(nums)
