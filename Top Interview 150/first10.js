@@ -231,13 +231,35 @@ var maxProfit = function (prices) {
 
 //Return true if you can reach the last index, or false otherwise.
 
-var canJump = function (nums) {
-    let lastIndex = nums.length - 1;
+var arr = [3,2,5,2,1]
 
-    for (let i = nums.length; i >= 0; i--) {
-        if (i + nums[i] >= lastIndex)
-            lastIndex = i;
+var canJump = function (nums) {
+    let lastIndex = nums.length - 1; //We define our var lastIndex as one value shorter than the total length. This is because we start at index 0, which means our firstr index is not counted in the total spaces we need to jump.
+
+    for (let i = nums.length; i >= 0; i--) { //Create a for loop to iterate through the whole array
+        console.log(i)
+        if (i + nums[i] >= lastIndex) //Here I state that if i's current value, which would be 0, added to the value of nums[i] is greater than or equal to the length of the array;
+        console.log(nums.length)
+        lastIndex = i; //Then lastIndex will be set to the value of i.
+        console.log('nums is:', nums[i])
+        console.log('i has a value of:', i)
+        console.log('last index is:', lastIndex)
     }
 
     return lastIndex == 0;
 };
+
+canJump(arr)
+
+
+//day 7
+//45. Jump Game II (?)
+//You are given a 0-indexed array of integers nums of length n. You are initially positioned at nums[0].
+//Each element nums[i] represents the maximum length of a forward jump from index i. In other words, if you are at nums[i], you can jump to any nums[i + j] where:
+//0 <= j <= nums[i] and
+//i + j < n
+//Return the minimum number of jumps to reach nums[n - 1]. The test cases are generated such that you can reach nums[n - 1].
+
+var jump = function(nums){
+    
+}
