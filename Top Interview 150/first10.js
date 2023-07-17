@@ -261,10 +261,10 @@ canJump(arr)
 //Return the minimum number of jumps to reach nums[n - 1]. The test cases are generated such that you can reach nums[n - 1].
 nums = [2, 3, 1, 1, 4]
 var jump = function (nums) {
-    let lastIndex = nums.length - 1;
-    let currentIndex = -1;
-    let nextIndex = 0;
-    let jumps = 0;
+    let lastIndex = nums.length - 1,
+        currentIndex = -1,
+        nextIndex = 0,
+        jumps = 0;
     for (let i = 0; nextIndex < lastIndex; i++) {
         if (i > currentIndex) {
             jumps++;
@@ -272,7 +272,115 @@ var jump = function (nums) {
         }
         nextIndex = Math.max(nextIndex, nums[i] + i);
     }
+    console.log(jumps)
     return jumps;
 }
 
 jump(nums)
+
+
+//day 8
+//274. H-Index
+
+//Given an array of integers citations where citations[i] is the number of citations a researcher received for their ith paper, return the researcher's h-index.
+//According to the definition of h-index on Wikipedia: The h-index is defined as the maximum value of h such that the given researcher has published at least h papers that have each been cited at least h times.
+let citations = [3, 0, 6, 1, 5]
+var hIndex = function (citations) {
+    console.log("Unsorted arrray:", citations)
+    citations.sort((a, b) => b - a) //the sort method works in a way I don't totally understand. What's important to note is that using a - b will put the array in ascending order, starting from the lowest value. b-a will put the array in decreasing order, with the highest value first.
+    i = 0
+    console.log("Sorted array:", citations)
+    while (citations[i] > i) {
+        i++
+    }
+    return i
+};
+
+hIndex(citations)
+
+//380. Insert Delete GetRandom O(1)
+//Implement the RandomizedSet class:
+
+//RandomizedSet() Initializes the RandomizedSet object.
+//bool insert(int val) Inserts an item val into the set if not present. Returns true if the item was not present, false otherwise.
+//bool remove(int val) Removes an item val from the set if present. Returns true if the item was present, false otherwise.
+//int getRandom() Returns a random element from the current set of elements (it's guaranteed that at least one element exists when this method is called). Each element must have the same probability of being returned.
+//You must implement the functions of the class such that each function works in average O(1) time complexity.
+
+var RandomizedSet = function() {
+    this.set = [];
+    this.valueIndexMap = new Map();
+};
+
+/** 
+ * @param {number} val
+ * @return {boolean}
+ */
+RandomizedSet.prototype.insert = function(val) {
+    if (this.valueIndexMap.has(val)) {
+        return false;
+    }
+    this.set.push(val);
+    this.valueIndexMap.set(val, this.set.length -1);
+    return true;
+};
+
+/** 
+ * @param {number} val
+ * @return {boolean}
+ */
+RandomizedSet.prototype.remove = function(val) {
+    if (!this.valueIndexMap.has(val)) {
+        return false;
+    }
+    const indexToRemove = this.valueIndexMap.get(val);
+    this.valueIndexMap.set(this.set[this.set.length - 1], indexToRemove);
+    this.valueIndexMap.delete(val);
+    this.set[indexToRemove] = this.set[this.set.length - 1];
+    this.set[this.set.length - 1] = val;
+    this.set.pop();
+    return true;
+};
+
+/**
+ * @return {number}
+ */
+RandomizedSet.prototype.getRandom = function() {
+    return this.set[Math.floor(Math.random()*this.set.length)];
+}
+/** 
+ * Your RandomizedSet object will be instantiated and called as such:
+ * var obj = new RandomizedSet()
+ * var param_1 = obj.insert(val)
+ * var param_2 = obj.remove(val)
+ * var param_3 = obj.getRandom()
+ */
+
+
+//day 9
+//238. Product of Array Except Self
+//Given an integer array nums, return an array answer such that answer[i] is equal to the product of all the elements of nums except nums[i].
+
+//The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.
+
+//You must write an algorithm that runs in O(n) time and without using the division operation.
+
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var productExceptSelf = function(nums) {
+    const result = new Array(nums.length).fill(1);
+
+    let prevProduct = 1;
+    for(let i = 0; i < nums.length; i++){
+        result[i] *= prevProduct;
+        prevProduct *= nums[i];
+    }
+    let nextProduct = 1;
+    for( let i = nums.length - 1; i >= 0; i--){
+        result[i] *= nextProduct;
+        nextProduct *= nums[i];
+    }
+    return result;
+};
