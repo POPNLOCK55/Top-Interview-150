@@ -266,7 +266,7 @@ var jump = function (nums) {
     let nextIndex = 0;
     let jumps = 0;
     for (let i = 0; nextIndex < lastIndex; i++) {
-        if ( i > currentIndex ) {
+        if (i > currentIndex) {
             jumps++;
             currentIndex = nextIndex;
         }
