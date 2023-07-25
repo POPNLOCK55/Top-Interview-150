@@ -307,7 +307,7 @@ hIndex(citations)
 //int getRandom() Returns a random element from the current set of elements (it's guaranteed that at least one element exists when this method is called). Each element must have the same probability of being returned.
 //You must implement the functions of the class such that each function works in average O(1) time complexity.
 
-var RandomizedSet = function() {
+var RandomizedSet = function () {
     this.set = [];
     this.valueIndexMap = new Map();
 };
@@ -316,12 +316,12 @@ var RandomizedSet = function() {
  * @param {number} val
  * @return {boolean}
  */
-RandomizedSet.prototype.insert = function(val) {
+RandomizedSet.prototype.insert = function (val) {
     if (this.valueIndexMap.has(val)) {
         return false;
     }
     this.set.push(val);
-    this.valueIndexMap.set(val, this.set.length -1);
+    this.valueIndexMap.set(val, this.set.length - 1);
     return true;
 };
 
@@ -329,7 +329,7 @@ RandomizedSet.prototype.insert = function(val) {
  * @param {number} val
  * @return {boolean}
  */
-RandomizedSet.prototype.remove = function(val) {
+RandomizedSet.prototype.remove = function (val) {
     if (!this.valueIndexMap.has(val)) {
         return false;
     }
@@ -345,8 +345,8 @@ RandomizedSet.prototype.remove = function(val) {
 /**
  * @return {number}
  */
-RandomizedSet.prototype.getRandom = function() {
-    return this.set[Math.floor(Math.random()*this.set.length)];
+RandomizedSet.prototype.getRandom = function () {
+    return this.set[Math.floor(Math.random() * this.set.length)];
 }
 /** 
  * Your RandomizedSet object will be instantiated and called as such:
@@ -369,18 +369,50 @@ RandomizedSet.prototype.getRandom = function() {
  * @param {number[]} nums
  * @return {number[]}
  */
-var productExceptSelf = function(nums) {
+var productExceptSelf = function (nums) {
     const result = new Array(nums.length).fill(1);
 
     let prevProduct = 1;
-    for(let i = 0; i < nums.length; i++){
+    for (let i = 0; i < nums.length; i++) {
         result[i] *= prevProduct;
         prevProduct *= nums[i];
     }
     let nextProduct = 1;
-    for( let i = nums.length - 1; i >= 0; i--){
+    for (let i = nums.length - 1; i >= 0; i--) {
         result[i] *= nextProduct;
         nextProduct *= nums[i];
     }
     return result;
 };
+
+//day 10
+//134. Gas Station
+//There are n gas stations along a circular route, where the amount of gas at the ith station is gas[i].
+//You have a car with an unlimited gas tank and it costs cost[i] of gas to travel from the ith station to its next (i + 1)th station. You begin the journey with an empty tank at one of the gas stations.
+//Given two integer arrays gas and cost, return the starting gas station's index if you can travel around the circuit once in the clockwise direction, otherwise return -1. If there exists a solution, it is guaranteed to be unique.
+
+var canCompleteCircuit = function (gas, cost) {
+    let step = 0;
+    let currentPos = 0;
+    let currentGas = gas[currentPos];
+    let numberOfTimeTried = 1;
+    let output = 0;
+
+    const getNextPos = (curr) => curr === gas.length - 1 ? 0 : curr++;
+
+    while (step <= gas.length) {
+        if (numberOfTimeTried > gas.length) return -1;
+        if (currentGas < cost[currentPos]) {
+            currentPos = getNextPos(currentPos);
+            numberOfTimeTried += step + 1;
+            step = 0
+            output = currentPos;
+            continue;
+        }
+        currentGas -= cost[currentPos];
+        currentPos = getNextPos(currentPos);
+        currentGas += gas[currentPos];
+        step++
+    }
+    return output;
+}
